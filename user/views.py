@@ -9,6 +9,7 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.shortcuts import get_object_or_404
 
 from . import serializers
+from .models import UserSelector
 
 User = get_user_model()
 
@@ -52,6 +53,25 @@ class LoginView(TOPView):
 
 
 class RetrieveUserView(generics.RetrieveAPIView):
+    serializer_class = serializers.UserProfileSerializer
+    lookup_field = 'pk'
+
+    def retrieve(self, request, *args, **kwargs):
+
+        data = super().retrieve(request, *args, **kwargs)
+        if data:
+            return Response({
+                "success": True,
+                "user": data.data,
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "success": False,
+            "message": "User not found."
+        }, status=status.HTTP_404_NOT_FOUND)
+
+
+class RetrieveMyUserProfile(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
     lookup_field = 'pk'
 
@@ -59,11 +79,14 @@ class RetrieveUserView(generics.RetrieveAPIView):
         return User.objects.filter(pk=self.request.user.pk)
 
     def retrieve(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        user = get_object_or_404(queryset, pk=kwargs['pk'])
-        serializer = self.get_serializer(user)
+        data = super().retrieve(request, *args, **kwargs)
+        if data:
+            return Response({
+                "success": True,
+                "user": data.data,
+            }, status=status.HTTP_200_OK)
+
         return Response({
-            "success": True,
-            "user": serializer.data,
-        }, status=status.HTTP_200_OK)
-    
+            "success": False,
+            "message": "User not found."
+        }, status=status.HTTP_404_NOT_FOUND)

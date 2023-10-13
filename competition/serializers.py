@@ -10,10 +10,28 @@ class UserCompInlineSerializer(serializers.Serializer):
 
 
 class CompetitionSerializer(serializers.ModelSerializer):
+    already_applied = serializers.SerializerMethodField()
+    is_accepted = serializers.SerializerMethodField()
+    fullName = serializers.CharField(source='creator.fullName', read_only=True)
 
     class Meta:
         model = Competition
         fields = "__all__"
+
+    def get_already_applied(self, obj):
+        request = self.context.get('request')
+        if request:
+            return obj.applied_users.filter(pk=request.user.pk).exists()
+        return False
+
+    def get_is_accepted(self, obj):
+        request = self.context.get('request')
+        if request:
+            userSelector = UserSelector.objects.filter(
+                user_applied=request.user, competition=obj)
+            if userSelector:
+                return userSelector[0].status
+        return False
 
     def validate(self, attrs):
         request = self.context.get('request')
@@ -26,7 +44,7 @@ class CompetitionSerializer(serializers.ModelSerializer):
                 {"creator": "You are not the creator of this competition."})
 
         return attrs
-    
+
 
 class ApplyCompetitionSerializer(serializers.ModelSerializer):
     class Meta:
