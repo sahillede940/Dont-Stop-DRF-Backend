@@ -2,8 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-
-
 class User(AbstractUser):
     username = None
     fullName = models.CharField(max_length=100)
@@ -15,13 +13,12 @@ class User(AbstractUser):
     updatedAt = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
-    # exclude email from required fields
     REQUIRED_FIELDS = ['fullName', 'college', 'about']
 
 
 class UserSelector(models.Model):
     user_applied = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='applied_competition_user')
+        'User', on_delete=models.CASCADE, related_name='selected_user')
     competition = models.ForeignKey(
         'competition.Competition', on_delete=models.CASCADE, related_name='applied_competition')
     status = models.BooleanField(default=False)

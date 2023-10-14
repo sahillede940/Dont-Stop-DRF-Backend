@@ -1,19 +1,12 @@
-from django.contrib.auth import get_user_model
-
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-
 from rest_framework_simplejwt.views import TokenObtainPairView as TOPView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-
-from django.shortcuts import get_object_or_404
-
 from . import serializers
-from .models import UserSelector
+
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-# Create your views here.
 
 
 class RegisterView(generics.CreateAPIView):

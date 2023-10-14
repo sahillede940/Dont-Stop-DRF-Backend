@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     # Local apps
     'user',
     'competition',
-    'api',
 ]
 
 MIDDLEWARE = [
@@ -79,10 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'serverdrf.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# SQLite database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
