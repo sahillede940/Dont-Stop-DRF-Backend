@@ -4,8 +4,8 @@ from datetime import timedelta
 from environs import Env
 
 # Initialise environment variables
-Env.read_env()
-env = Env()
+# Env.read_env()
+# env = Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -155,6 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 
 CORS_ALLOWED_ORIGINS = [
+    'localhost:3000',
+    'http://localhost:3000',
 ]
 
 
@@ -162,6 +164,7 @@ CORS_ALLOWED_ORIGINS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -179,10 +182,7 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": False,
 }
 
-if env('DEBUG'):
-    CORS_ALLOWED_ORIGINS += [
-        'http://localhost:3000',
-    ]
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += [
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+# if env('DEBUG'):
+# CORS_ALLOWED_ORIGINS += [
+# 'http://localhost:3000',
+# ]
