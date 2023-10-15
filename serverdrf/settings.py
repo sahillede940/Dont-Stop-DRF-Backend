@@ -79,24 +79,36 @@ TEMPLATES = [
 WSGI_APPLICATION = 'serverdrf.wsgi.application'
 
 # SQLite database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# Connect to PostgreSQL
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "USER": env('DB_USERNAME'),
+#         "NAME": env('DB_NAME'),
+#         "HOST": env('DB_HOST'),
+#         "PASSWORD": env('DB_PASSWORD'),
+#         "PORT": env('DB_PORT')
 #     }
 # }
 
-# Connect to PostgreSQL
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": env('DB_USERNAME'),
-        "NAME": env('DB_NAME'),
-        "HOST": env('DB_HOST'),
-        "PASSWORD": env('DB_PASSWORD'),
-        "PORT": env('DB_PORT')
-    }
-}
+# Connect to Google Cloud SQL
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_USERNAME'),
+#         'USER': env('DB_NAME'),
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': env('DB_HOST'),
+#         'PORT': env('DB_PORT'),
+#     }
+# }
 
 
 # Password validation

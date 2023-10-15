@@ -1,10 +1,11 @@
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
+from user.serializers import UserSelectorSerializer
 
 from .models import Competition
 from . import serializers
 from user.models import UserSelector
-from user.serializers import UserSelectorSerializer
+from rest_framework import filters
 
 from django.contrib.auth import get_user_model
 
@@ -14,7 +15,7 @@ User = get_user_model()
 class OptimizedQuerySetMixin:
     def get_queryset(self):
         if self.action == 'list':
-            return Competition.objects.raw(f"SELECT * FROM competition_competition AS a WHERE a.creator_id != {self.request.user.pk}")
+            return Competition.objects.exclude(creator=self.request.user)
         else:
             return Competition.objects.filter(pk=self.kwargs['pk'])
 
@@ -22,6 +23,8 @@ class OptimizedQuerySetMixin:
 class CompetitionViewSet(OptimizedQuerySetMixin, viewsets.ModelViewSet):
     serializer_class = serializers.CompetitionSerializer
     lookup_field = 'pk'
+    search_fields = ['name', 'description']
+    filter_backends = (filters.SearchFilter,)
 
     def is_creator(self):
         return self.request.user == self.get_object().creator
