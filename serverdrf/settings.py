@@ -22,9 +22,7 @@ AUTH_USER_MODEL = 'user.User'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -159,7 +157,6 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5000',
 ]
 
-
 # REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -181,8 +178,3 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
 }
-
-# if env('DEBUG'):
-# CORS_ALLOWED_ORIGINS += [
-# 'http://localhost:3000',
-# ]
